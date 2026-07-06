@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "best.onnx")
-CLASS_NAMES = ["licence"]        
+CLASS_NAMES = ["num_plate", "number_plate"]    
 DEFAULT_CONF = 0.40
 IOU_THRESHOLD = 0.45
 
@@ -65,17 +65,13 @@ def nms(boxes, iou_thresh):
 
 
 def decode_output(output, conf_thresh, scale, pad_x, pad_y):
-    st.write("DEBUG raw output shape:", output.shape)
-    preds = output[0]
-    st.write("DEBUG preds shape after output[0]:", preds.shape)
 
+    preds = output[0]
     expected_dim = 5 + len(CLASS_NAMES)
     if preds.shape[-1] != expected_dim and preds.shape[0] == expected_dim:
         preds = preds.T
-        st.write("DEBUG transposed, new shape:", preds.shape)
 
     num_classes = preds.shape[1] - 5
-    st.write("DEBUG num_classes computed:", num_classes)
 
     objectness = preds[:, 4]
     class_scores = preds[:, 5:5 + num_classes]
