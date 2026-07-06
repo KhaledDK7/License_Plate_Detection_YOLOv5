@@ -10,7 +10,7 @@ A YOLOv5 object detector, fine-tuned to locate vehicle license plates, exported 
 
 | Path | What it is |
 |---|---|
-| `License_Plate_Detection_YOLOv5__KD_.ipynb` | End-to-end notebook: dataset prep → training → inference → ONNX export |
+| `License_Plate_Detection_YOLOv5 (KD).ipynb` | End-to-end notebook: dataset prep → training → inference → ONNX export |
 | `streamlit_app/app.py` | Streamlit frontend — uploads an image, runs the ONNX model, draws detections |
 | `streamlit_app/requirements.txt` | Python dependencies for the Streamlit app |
 | `streamlit_app/best.onnx` | Trained model weights, exported from YOLOv5 to ONNX |
@@ -30,7 +30,7 @@ A YOLOv5 object detector, fine-tuned to locate vehicle license plates, exported 
 
 ## Running the notebook
 
-Open `License_Plate_Detection_YOLOv5__KD_.ipynb` in Google Colab (GPU runtime recommended) and run top to bottom. It downloads the dataset, trains YOLOv5, evaluates it, and produces `streamlit_app/` (`app.py`, `requirements.txt`, `best.onnx`) ready to push to GitHub / deploy.
+Open `License_Plate_Detection_YOLOv5 (KD).ipynb` in Google Colab (GPU runtime recommended) and run top to bottom. It downloads the dataset, trains YOLOv5, evaluates it, and produces `streamlit_app/` (`app.py`, `requirements.txt`, `best.onnx`) ready to push to GitHub / deploy.
 
 ## Running the Streamlit app locally
 
@@ -41,7 +41,6 @@ streamlit run app.py
 ```
 
 Then open `http://localhost:8501`, upload a photo of a vehicle, and adjust the confidence slider as needed.
-
 
 ## Tech stack
 
