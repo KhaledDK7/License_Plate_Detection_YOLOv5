@@ -1,15 +1,16 @@
 
 import io
 import time
-
+import os
 import numpy as np
 import onnxruntime as ort
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 
 
-MODEL_PATH = "best.onnx"          # exported with: yolov5/export.py --include onnx
-CLASS_NAMES = ["licence"]         # must match the `names:` list in plate_detection.yaml
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "best.onnx")
+CLASS_NAMES = ["licence"]        
 DEFAULT_CONF = 0.40
 IOU_THRESHOLD = 0.45
 
@@ -33,15 +34,15 @@ def letterbox(img: Image.Image, size: int):
     pad_x, pad_y = (size - new_w) // 2, (size - new_h) // 2
 
     resized = img.resize((new_w, new_h), Image.BILINEAR)
-    canvas = Image.new("RGB", (size, size), (114, 114, 114))  # YOLOv5's default fill colour
+    canvas = Image.new("RGB", (size, size), (114, 114, 114)) 
     canvas.paste(resized, (pad_x, pad_y))
     return canvas, scale, pad_x, pad_y
 
 
 def image_to_tensor(img: Image.Image):
-    arr = np.asarray(img).astype(np.float32) / 255.0  # HWC, RGB, [0,1]
-    arr = arr.transpose(2, 0, 1)                       # CHW
-    return np.expand_dims(arr, axis=0)                 # NCHW
+    arr = np.asarray(img).astype(np.float32) / 255.0
+    arr = arr.transpose(2, 0, 1)
+    return np.expand_dims(arr, axis=0)
 
 
 
@@ -64,8 +65,7 @@ def nms(boxes, iou_thresh):
 
 
 def decode_output(output, conf_thresh, scale, pad_x, pad_y):
-    # YOLOv5 ONNX export output shape: [1, num_boxes, 5 + num_classes]
-    # layout per box: [cx, cy, w, h, objectness, class_score_0, class_score_1, ...]
+
     preds = output[0]
     num_classes = preds.shape[1] - 5
 
