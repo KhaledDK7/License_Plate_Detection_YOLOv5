@@ -67,6 +67,9 @@ def nms(boxes, iou_thresh):
 def decode_output(output, conf_thresh, scale, pad_x, pad_y):
 
     preds = output[0]
+    expected_dim = 5 + len(CLASS_NAMES)
+    if preds.shape[-1] != expected_dim and preds.shape[0] == expected_dim:
+        preds = preds.T
     num_classes = preds.shape[1] - 5
 
     objectness = preds[:, 4]
